@@ -26,7 +26,7 @@ bl_info = {
     "blender": (2, 80, 0),
     "category": "Object",
     "author": "Lofty",
-    "version": (1, 0),
+    "version": (1, 1),
     "description": "Determines the FoV_Y and Width import values for a Sphere Object",
 }
 
@@ -97,6 +97,7 @@ class FOVProperties(bpy.types.PropertyGroup):
     test_width_float : bpy.props.FloatProperty(name= "13. Enter Test Width", precision= v_precise, update=changeTestWidth,
                                              min= 1.0, soft_max= 8192.0, default= 0.0)
     test_x_float : bpy.props.FloatProperty(name= "Test X", default= 0.0, precision= v_precise)
+    test_z_float : bpy.props.FloatProperty(name= "Test Z", default= 0.00, precision= v_precise)
     final_width_float : bpy.props.FloatProperty(name= "16. Final Width", default= 0.0, precision= v_precise)
     
     base_width_import_bool : bpy.props.BoolProperty(name= "", default= False)
@@ -104,7 +105,7 @@ class FOVProperties(bpy.types.PropertyGroup):
     base_x_bool : bpy.props.BoolProperty(name= "", default= False)
     test_width_import_bool : bpy.props.BoolProperty(name= "", default= False)
     test_width_bool : bpy.props.BoolProperty(name= "", default= False)
-    test_x_bool : bpy.props.BoolProperty(name= "", default= False)
+    test_xz_bool : bpy.props.BoolProperty(name= "", default= False)
     calc_width_bool : bpy.props.BoolProperty(name= "", default= False)
 
 
@@ -249,7 +250,7 @@ class FOV_OT_BaseImport(bpy.types.Operator):
         fovtool.base_x_bool = False
         fovtool.test_width_import_bool = False
         fovtool.test_width_bool = False
-        fovtool.test_x_bool = False
+        fovtool.test_xz_bool = False
         fovtool.calc_width_bool = False
         
         return {'FINISHED'}
@@ -427,7 +428,7 @@ class WIDTH_PT_width_panel(bpy.types.Panel):
         row.alignment = 'LEFT'
         row.enabled = fovtool.test_width_bool
         row.template_node_socket(color=(fovtool.ns_color))
-        row.operator("fovcalc.width_gettestx")
+        row.operator("fovcalc.width_gettestxz")
 
         row = layout.row()
         row.use_property_split = True
@@ -437,9 +438,16 @@ class WIDTH_PT_width_panel(bpy.types.Panel):
         row.prop(fovtool, "test_x_float")
 
         row = layout.row()
+        row.use_property_split = True
+#        row.alignment = 'LEFT'
+        row.enabled = False
+        row.template_node_socket(color=(fovtool.ns_color))
+        row.prop(fovtool, "test_z_float")
+
+        row = layout.row()
         row.use_property_split = False
         row.alignment = 'LEFT'
-        row.enabled = fovtool.test_x_bool
+        row.enabled = fovtool.test_xz_bool
         row.template_node_socket(color=(fovtool.ns_color))
         row.operator("fovcalc.width_calculator")
 
@@ -479,7 +487,7 @@ class WIDTH_OT_BaseImport(bpy.types.Operator):
         fovtool.base_x_bool = False
         fovtool.test_width_import_bool = False
         fovtool.test_width_bool = False
-        fovtool.test_x_bool = False
+        fovtool.test_xz_bool = False
         fovtool.calc_width_bool = False
         
         return {'FINISHED'}
@@ -527,10 +535,10 @@ class WIDTH_OT_TestImport(bpy.types.Operator):
         return {'FINISHED'}
 
 
-class WIDTH_OT_gettestX(bpy.types.Operator):
-    """Gets the X dimension of the Test object."""
-    bl_label = "14. Get Test X"
-    bl_idname = "fovcalc.width_gettestx"
+class WIDTH_OT_gettestXZ(bpy.types.Operator):
+    """Gets the X and Z dimension of the Test object."""
+    bl_label = "14. Get Test XZ"
+    bl_idname = "fovcalc.width_gettestxz"
 
     @classmethod
     def poll(cls, context): 
@@ -544,8 +552,9 @@ class WIDTH_OT_gettestX(bpy.types.Operator):
         ob = context.active_object
 
         fovtool.test_x_float = ob.dimensions[0]
+        fovtool.test_z_float = ob.dimensions[2]
 
-        fovtool.test_x_bool = True
+        fovtool.test_xz_bool = True
 
         return {'FINISHED'}
 
@@ -568,13 +577,13 @@ class WIDTH_OT_calc(bpy.types.Operator):
 
         BASE_Width = fovtool.base_width_float
         BASE_X = fovtool.base_x_float
-        BASE_Z = fovtool.base_z_float
 
         TEST_Width = fovtool.test_width_float
         TEST_X = fovtool.test_x_float
+        TEST_Z = fovtool.test_z_float
 
         WIDE_Diff = BASE_Width - TEST_Width
-        BASE_Diff = BASE_X - BASE_Z
+        BASE_Diff = BASE_X - TEST_Z
         TEST_Diff = BASE_X - TEST_X
         PERC_Chng = 0
         if not BASE_Diff == 0:
@@ -606,7 +615,7 @@ classes = [ FOVProperties,
             WIDTH_OT_BaseImport,
             WIDTH_OT_getbaseX,
             WIDTH_OT_TestImport,
-            WIDTH_OT_gettestX,
+            WIDTH_OT_gettestXZ,
             WIDTH_OT_calc]
 
 
