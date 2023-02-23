@@ -10,8 +10,8 @@ Quick Use Chart.
 
 FoV_Y Calculator
 
-1. 1st Import - Base (Reset)
-This clears all calculated and auto obtained values so you can start over. It retains user supplied values between runs. In the Importer settings, be sure to choose "Geometry Load:" [Reprojection (Full)]. Use the Width and Height values from the log file, or you can supply higher values for better precision.
+1. 1st Import - Base (Reset)                                                  
+   This clears all calculated and auto obtained values so you can start over. It retains user supplied values between runs. In the Importer settings, be sure to choose "Geometry Load:" [Reprojection (Full)]. Use the Width and Height values from the log file, or you can supply higher values for better precision.
 
 2. Enter Base FoV_Y
    Enter the value from the first import.
