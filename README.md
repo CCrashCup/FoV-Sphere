@@ -51,7 +51,7 @@ Width Calculator
 13. Enter Test Width
     Enter the value from the fourth import.
 
-14. Get Test X
+14. Get Test XZ
     Make sure the mesh is selected. This obtains the needed value automatically.
 
 15. Calculate Width
