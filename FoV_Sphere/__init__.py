@@ -26,7 +26,7 @@ bl_info = {
     "blender": (2, 80, 0),
     "category": "Object",
     "author": "Lofty",
-    "version": (1, 1),
+    "version": (1, 2),
     "description": "Determines the FoV_Y and Width import values for a Sphere Object",
 }
 
@@ -35,14 +35,23 @@ bl_info = {
 ##      Not good practice, but I am tired.
 #
 
-v_precise = 5
+v_precise = 6
 
 class FOVProperties(bpy.types.PropertyGroup):
+
+    @classmethod
+    def poll(cls, context): 
+        obj = context.active_object
+        return obj is not None and obj.type == 'MESH'
+
 #
 ##  Common Section
 #
 
-    ns_color : bpy.props.FloatVectorProperty(name= "", size= 4, default= (0.25875, 0.25875, 0.25875, 1.0))
+    ns_gray : bpy.props.FloatVectorProperty(name= "", size= 4, default= (0.185, 0.185, 0.185, 1.0))
+    ns_green : bpy.props.FloatVectorProperty(name= "", size= 4, default= (0.0, 1.0, 0.0, 1.0))
+    ns_red : bpy.props.FloatVectorProperty(name= "", size= 4, default= (1.0, 0.0, 0.0, 1.0))
+    ns_yellow : bpy.props.FloatVectorProperty(name= "", size= 4, default= (1.0, 1.0, 0.0, 1.0))
 
 #
 ##  FoV Section
@@ -53,21 +62,45 @@ class FOVProperties(bpy.types.PropertyGroup):
 
         fovtool.base_fov_bool = True
 
+        if not fovtool.fov_expert_bool:
+            ob = context.active_object
+            fovtool.base_y_float = ob.dimensions[1]
+            fovtool.base_z_float = ob.dimensions[2]
+            fovtool.base_yz_bool = True
+
+
     def changeTestFoV(self, context):
         scene = context.scene
         fovtool = scene.my_tool
 
         fovtool.test_fov_bool = True
 
+        if not fovtool.fov_expert_bool:
+            ob = context.active_object
+            fovtool.test_y_float = ob.dimensions[1]
+            fovtool.test_y_bool = True
+
+    def copyFinalFoV(self, context):
+        scene = context.scene
+        fovtool = scene.my_tool
+
+        if not fovtool.hold_fov_bool and not fovtool.final_fov_bool:
+            fovtool.hold_fov_bool = True
+        elif fovtool.hold_fov_bool and not fovtool.final_fov_bool:
+            fovtool.final_fov_bool = True
+
+
     base_fov_float : bpy.props.FloatProperty(name= "2. Enter Base FoV_Y", precision= v_precise, update= changeBaseFoV,
                                              min= 1.0, max= 360.0, default= 45.0)
     base_y_float : bpy.props.FloatProperty(name= "Base Y", default= 0.00, precision= v_precise)
     base_z_float : bpy.props.FloatProperty(name= "Base Z", default= 0.00, precision= v_precise)
-    test_fov_float : bpy.props.FloatProperty(name= "5. Enter Test FoV_Y", precision= v_precise, update=changeTestFoV,
+    test_fov_float : bpy.props.FloatProperty(name= "5. Enter Test FoV_Y", precision= v_precise, update= changeTestFoV,
                                              min= 1.0, max= 360.0, default= 30.0)
     test_y_float : bpy.props.FloatProperty(name= "Test Y", default= 0.0, precision= v_precise)
-    final_fov_float : bpy.props.FloatProperty(name= "8. Final FoV_Y", default= 0.0, precision= v_precise)
+    final_fov_float : bpy.props.FloatProperty(name= "8. Final FoV_Y", precision= v_precise, update= copyFinalFoV,
+                                             min= 1.0, max= 360.0, default= 0.0)
 
+    fov_expert_bool : bpy.props.BoolProperty(name= "Expert", default= False)
     base_fov_import_bool : bpy.props.BoolProperty(name= "", default= False)
     base_fov_bool : bpy.props.BoolProperty(name= "", default= False)
     base_yz_bool : bpy.props.BoolProperty(name= "", default= False)
@@ -75,6 +108,8 @@ class FOVProperties(bpy.types.PropertyGroup):
     test_fov_bool : bpy.props.BoolProperty(name= "", default= False)
     test_y_bool : bpy.props.BoolProperty(name= "", default= False)
     calc_fov_bool : bpy.props.BoolProperty(name= "", default= False)
+    hold_fov_bool : bpy.props.BoolProperty(name= "", default= False)
+    final_fov_bool : bpy.props.BoolProperty(name= "", default= False)
 
 #
 ##  Width Section
@@ -85,20 +120,44 @@ class FOVProperties(bpy.types.PropertyGroup):
 
         fovtool.base_width_bool = True
 
+        if not fovtool.fov_expert_bool:
+            ob = context.active_object
+            fovtool.base_x_float = ob.dimensions[0]
+            fovtool.base_x_bool = True
+
+
     def changeTestWidth(self, context):
         scene = context.scene
         fovtool = scene.my_tool
 
         fovtool.test_width_bool = True
 
-    base_width_float : bpy.props.FloatProperty(name= "10. Enter Base Width", precision= v_precise, update=changeBaseWidth,
+        if not fovtool.fov_expert_bool:
+            ob = context.active_object
+            fovtool.test_x_float = ob.dimensions[0]
+            fovtool.test_z_float = ob.dimensions[2]
+            fovtool.test_xz_bool = True
+
+
+    def copyFinalWidth(self, context):
+        scene = context.scene
+        fovtool = scene.my_tool
+
+        if not fovtool.hold_width_bool and not fovtool.final_width_bool:
+            fovtool.hold_width_bool = True
+        elif fovtool.hold_width_bool and not fovtool.final_width_bool:
+            fovtool.final_width_bool = True
+
+
+    base_width_float : bpy.props.FloatProperty(name= "10. Enter Base Width", precision= v_precise, update= changeBaseWidth,
                                              min= 1.0, soft_max= 8192.0, default= 0.0)
     base_x_float : bpy.props.FloatProperty(name= "Base X", default= 0.00, precision= v_precise)
-    test_width_float : bpy.props.FloatProperty(name= "13. Enter Test Width", precision= v_precise, update=changeTestWidth,
+    test_width_float : bpy.props.FloatProperty(name= "13. Enter Test Width", precision= v_precise, update= changeTestWidth,
                                              min= 1.0, soft_max= 8192.0, default= 0.0)
     test_x_float : bpy.props.FloatProperty(name= "Test X", default= 0.0, precision= v_precise)
     test_z_float : bpy.props.FloatProperty(name= "Test Z", default= 0.00, precision= v_precise)
-    final_width_float : bpy.props.FloatProperty(name= "16. Final Width", default= 0.0, precision= v_precise)
+    final_width_float : bpy.props.FloatProperty(name= "16. Final Width", precision= v_precise, update= copyFinalWidth,
+                                             min= 1.0, soft_max= 8192.0, default= 0.0)
     
     base_width_import_bool : bpy.props.BoolProperty(name= "", default= False)
     base_width_bool : bpy.props.BoolProperty(name= "", default= False)
@@ -107,6 +166,8 @@ class FOVProperties(bpy.types.PropertyGroup):
     test_width_bool : bpy.props.BoolProperty(name= "", default= False)
     test_xz_bool : bpy.props.BoolProperty(name= "", default= False)
     calc_width_bool : bpy.props.BoolProperty(name= "", default= False)
+    hold_width_bool : bpy.props.BoolProperty(name= "", default= False)
+    final_width_bool : bpy.props.BoolProperty(name= "", default= False)
 
 
 #
@@ -127,91 +188,159 @@ class FOV_PT_fov_panel(bpy.types.Panel):
         scene = context.scene
         fovtool = scene.my_tool
         layout.use_property_decorate = False  # No animation.
-        
-        row = layout.row()
+
+        box = layout.box()
+        row = box.row()
+        layout.use_property_split = False
+        row.alignment = 'RIGHT'
+        row.enabled = True
+        row.prop(fovtool, "fov_expert_bool", text="Expert Mode")
+
+        countRow = 1
+#        labelRow = str(countRow) + ". Do 1st FoV_Y Import (Reset)"
+        row = box.row()
         layout.use_property_split = False
         row.alignment = 'LEFT'
         row.enabled = True
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.operator("fovcalc.fov_baseimport")
+        if fovtool.base_fov_import_bool and not fovtool.base_fov_bool:
+            row.template_node_socket(color=(fovtool.ns_yellow))
+        else:
+            row.template_node_socket(color=(fovtool.ns_gray))
+        row.operator("fovcalc.fov_baseimport", text="{}. Do 1st FoV_Y Import (Reset)".format(countRow))
+#        row.operator("fovcalc.fov_baseimport", text=labelRow)
 
-        row = layout.row()
+        countRow += 1
+        labelRow = str(countRow) + ". Enter FoV_Y used"
+        row = box.row()
         layout.use_property_split = False
         row.alignment = 'LEFT'
         row.enabled = fovtool.base_fov_import_bool
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.prop(fovtool, "base_fov_float")
+        if fovtool.fov_expert_bool:
+            if fovtool.base_fov_bool and not fovtool.base_yz_bool:
+                row.template_node_socket(color=(fovtool.ns_yellow))
+            else:
+                row.template_node_socket(color=(fovtool.ns_gray))
+        else:
+            if fovtool.base_fov_bool and not fovtool.test_fov_import_bool:
+                row.template_node_socket(color=(fovtool.ns_yellow))
+            else:
+                row.template_node_socket(color=(fovtool.ns_gray))
+        row.prop(fovtool, "base_fov_float", text=labelRow)
 
-        row = layout.row()
-        row.use_property_split = False
-        row.alignment = 'LEFT'
-        row.enabled = fovtool.base_fov_bool
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.operator("fovcalc.fov_getbaseyz")
+        if fovtool.fov_expert_bool:
+            countRow += 1
+            labelRow = str(countRow) + ". Record mesh data"
+            row = box.row()
+            row.use_property_split = False
+            row.alignment = 'LEFT'
+            row.enabled = fovtool.base_fov_bool
+            if fovtool.base_yz_bool and not fovtool.test_fov_import_bool:
+                row.template_node_socket(color=(fovtool.ns_yellow))
+            else:
+                row.template_node_socket(color=(fovtool.ns_gray))
+            row.operator("fovcalc.fov_getbaseyz", text=labelRow)
 
-        row = layout.row()
-        row.use_property_split = True
-#        row.alignment = 'LEFT'
-        row.enabled = False
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.prop(fovtool, "base_y_float")
+            row = box.row()
+            row.use_property_split = True
+    #        row.alignment = 'LEFT'
+            if fovtool.fov_expert_bool:
+                row.enabled = fovtool.base_fov_bool
+            else:
+                row.enabled = False
+            row.template_node_socket(color=(fovtool.ns_gray))
+            row.prop(fovtool, "base_y_float")
 
-        row = layout.row()
-        row.use_property_split = True
-#        row.alignment = 'LEFT'
-        row.enabled = False
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.prop(fovtool, "base_z_float")
+            row = box.row()
+            row.use_property_split = True
+    #        row.alignment = 'LEFT'
+            if fovtool.fov_expert_bool:
+                row.enabled = fovtool.base_fov_bool
+            else:
+                row.enabled = False
+            row.template_node_socket(color=(fovtool.ns_gray))
+            row.prop(fovtool, "base_z_float")
 
-        row = layout.row()
+        countRow += 1
+        labelRow = str(countRow) + ". Do 2nd FoV_Y Import"
+        row = box.row()
         layout.use_property_split = False
         row.alignment = 'LEFT'
         row.enabled = fovtool.base_yz_bool
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.operator("fovcalc.fov_testimport")
+        if fovtool.test_fov_import_bool and not fovtool.test_fov_bool:
+            row.template_node_socket(color=(fovtool.ns_yellow))
+        else:
+            row.template_node_socket(color=(fovtool.ns_gray))
+        row.operator("fovcalc.fov_testimport", text=labelRow)
 
-        row = layout.row()
+        countRow += 1
+        labelRow = str(countRow) + ". Enter FoV_Y used"
+        row = box.row()
         row.use_property_split = False
         row.alignment = 'LEFT'
         row.enabled = fovtool.test_fov_import_bool
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.prop(fovtool, "test_fov_float")
+        if fovtool.fov_expert_bool:
+            if fovtool.test_fov_bool and not fovtool.test_y_bool:
+                row.template_node_socket(color=(fovtool.ns_yellow))
+            else:
+                row.template_node_socket(color=(fovtool.ns_gray))
+        else:
+            if fovtool.test_fov_bool and not fovtool.calc_fov_bool:
+                row.template_node_socket(color=(fovtool.ns_yellow))
+            else:
+                row.template_node_socket(color=(fovtool.ns_gray))
+        row.prop(fovtool, "test_fov_float", text=labelRow)
 
-        row = layout.row()
-        row.use_property_split = False
-        row.alignment = 'LEFT'
-        row.enabled = fovtool.test_fov_bool
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.operator("fovcalc.fov_gettesty")
+        if fovtool.fov_expert_bool:
+            countRow += 1
+            labelRow = str(countRow) + ". Record mesh data"
+            row = box.row()
+            row.use_property_split = False
+            row.alignment = 'LEFT'
+            row.enabled = fovtool.test_fov_bool
+            if fovtool.test_y_bool and not fovtool.calc_fov_bool:
+                row.template_node_socket(color=(fovtool.ns_yellow))
+            else:
+                row.template_node_socket(color=(fovtool.ns_gray))
+            row.operator("fovcalc.fov_gettesty", text=labelRow)
 
-        row = layout.row()
-        row.use_property_split = True
-#        row.alignment = 'LEFT'
-        row.enabled = False
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.prop(fovtool, "test_y_float")
+            row = box.row()
+            row.use_property_split = True
+    #        row.alignment = 'LEFT'
+            if fovtool.fov_expert_bool:
+                row.enabled = fovtool.test_fov_bool
+            else:
+                row.enabled = False
+            row.template_node_socket(color=(fovtool.ns_gray))
+            row.prop(fovtool, "test_y_float")
 
-        row = layout.row()
+        countRow += 1
+        labelRow = str(countRow) + ". Do FoV_Y Calculation"
+        row = box.row()
         row.use_property_split = False
         row.alignment = 'LEFT'
         row.enabled = fovtool.test_y_bool
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.operator("fovcalc.fov_calculator")
+        if fovtool.calc_fov_bool and not fovtool.final_fov_bool:
+            row.template_node_socket(color=(fovtool.ns_yellow))
+        else:
+            row.template_node_socket(color=(fovtool.ns_gray))
+        row.operator("fovcalc.fov_calculator", text=labelRow)
 
-        row = layout.row()
+        countRow += 1
+        labelRow = str(countRow) + ". Correct FoV_Y"
+        row = box.row()
         row.use_property_split = False
         row.alignment = 'LEFT'
         row.enabled = fovtool.calc_fov_bool
         if fovtool.calc_fov_bool:
-            row.template_node_socket(color=(0, 1, 0, 1))
+            row.template_node_socket(color=(fovtool.ns_green))
         else:
-            row.template_node_socket(color=(1, 0, 0, 1))
-        row.prop(fovtool, "final_fov_float")
-
+            row.template_node_socket(color=(fovtool.ns_red))
+        row.prop(fovtool, "final_fov_float", text=labelRow)
 
 class FOV_OT_BaseImport(bpy.types.Operator):
-    """Beginning of FoV process."""
-    bl_label = "1. 1st Import - Base (Reset)"
+    """Do an import with the first FoV value
+to be used in the calculation."""
+    bl_label = "Do 1st FoV_Y Import (Reset)"
     bl_idname = "fovcalc.fov_baseimport"
 
     @classmethod
@@ -238,6 +367,8 @@ class FOV_OT_BaseImport(bpy.types.Operator):
         fovtool.test_fov_bool = False
         fovtool.test_y_bool = False
         fovtool.calc_fov_bool = False
+        fovtool.hold_fov_bool = False
+        fovtool.final_fov_bool = False
 
 #        fovtool.base_width_float = 1024.0
         fovtool.base_x_float = 0.0
@@ -252,6 +383,8 @@ class FOV_OT_BaseImport(bpy.types.Operator):
         fovtool.test_width_bool = False
         fovtool.test_xz_bool = False
         fovtool.calc_width_bool = False
+        fovtool.hold_width_bool = False
+        fovtool.final_width_bool = False
         
         return {'FINISHED'}
 
@@ -358,6 +491,7 @@ class FOV_OT_calc(bpy.types.Operator):
             fovtool.calc_fov_bool = True
         else:
             fovtool.final_fov_float = -1
+            fovtool.calc_fov_bool = False
 
         return {'FINISHED'}
 
@@ -381,85 +515,149 @@ class WIDTH_PT_width_panel(bpy.types.Panel):
         fovtool = scene.my_tool
         layout.use_property_decorate = False  # No animation.
 
-        row = layout.row()
+        if fovtool.fov_expert_bool:
+            countRow = 9
+        else:
+            countRow = 7
+        labelRow = str(countRow) + ". Do 1st Width Import (Reset)"
+        box = layout.box()
+        row = box.row()
         layout.use_property_split = False
         row.alignment = 'LEFT'
-        row.enabled = fovtool.calc_fov_bool
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.operator("fovcalc.width_base_import")
+        row.enabled = fovtool.final_fov_bool
+        if fovtool.base_width_import_bool and not fovtool.base_width_bool:
+            row.template_node_socket(color=(fovtool.ns_yellow))
+        else:
+            row.template_node_socket(color=(fovtool.ns_gray))
+        row.operator("fovcalc.width_base_import", text=labelRow)
 
-        row = layout.row()
+        countRow += 1
+        labelRow = str(countRow) + ". Enter Width used"
+        row = box.row()
         layout.use_property_split = False
         row.alignment = 'LEFT'
         row.enabled = fovtool.base_width_import_bool
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.prop(fovtool, "base_width_float")
+        if fovtool.fov_expert_bool:
+            if fovtool.base_width_bool and not fovtool.base_x_bool:
+                row.template_node_socket(color=(fovtool.ns_yellow))
+            else:
+                row.template_node_socket(color=(fovtool.ns_gray))
+        else:
+            if fovtool.base_width_bool and not fovtool.test_width_import_bool:
+                row.template_node_socket(color=(fovtool.ns_yellow))
+            else:
+                row.template_node_socket(color=(fovtool.ns_gray))
+        row.prop(fovtool, "base_width_float", text=labelRow)
 
-        row = layout.row()
-        row.use_property_split = False
-        row.alignment = 'LEFT'
-        row.enabled = fovtool.base_width_bool
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.operator("fovcalc.width_getbasex")
+        if fovtool.fov_expert_bool:
+            countRow += 1
+            labelRow = str(countRow) + ". Record mesh data"
+            row = box.row()
+            row.use_property_split = False
+            row.alignment = 'LEFT'
+            row.enabled = fovtool.base_width_bool
+            if fovtool.base_x_bool and not fovtool.test_width_import_bool:
+                row.template_node_socket(color=(fovtool.ns_yellow))
+            else:
+                row.template_node_socket(color=(fovtool.ns_gray))
+            row.operator("fovcalc.width_getbasex", text=labelRow)
 
-        row = layout.row()
-        row.use_property_split = True
-#        row.alignment = 'LEFT'
-        row.enabled = False
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.prop(fovtool, "base_x_float")
+            row = box.row()
+            row.use_property_split = True
+    #        row.alignment = 'LEFT'
+            if fovtool.fov_expert_bool:
+                row.enabled = fovtool.base_width_bool
+            else:
+                row.enabled = False
+            row.template_node_socket(color=(fovtool.ns_gray))
+            row.prop(fovtool, "base_x_float")
 
-        row = layout.row()
+        countRow += 1
+        labelRow = str(countRow) + ". Do 2nd Width Import"
+        row = box.row()
         layout.use_property_split = False
         row.alignment = 'LEFT'
         row.enabled = fovtool.base_x_bool
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.operator("fovcalc.width_testimport")
+        if fovtool.test_width_import_bool and not fovtool.test_width_bool:
+            row.template_node_socket(color=(fovtool.ns_yellow))
+        else:
+            row.template_node_socket(color=(fovtool.ns_gray))
+        row.operator("fovcalc.width_testimport", text=labelRow)
 
-        row = layout.row()
+        countRow += 1
+        labelRow = str(countRow) + ". Enter Width used"
+        row = box.row()
         row.use_property_split = False
         row.alignment = 'LEFT'
         row.enabled = fovtool.test_width_import_bool
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.prop(fovtool, "test_width_float")
+        if fovtool.fov_expert_bool:
+            if fovtool.test_width_bool and not fovtool.test_xz_bool:
+                row.template_node_socket(color=(fovtool.ns_yellow))
+            else:
+                row.template_node_socket(color=(fovtool.ns_gray))
+        else:
+            if fovtool.test_width_bool and not fovtool.calc_width_bool:
+                row.template_node_socket(color=(fovtool.ns_yellow))
+            else:
+                row.template_node_socket(color=(fovtool.ns_gray))
+        row.prop(fovtool, "test_width_float", text=labelRow)
 
-        row = layout.row()
-        row.use_property_split = False
-        row.alignment = 'LEFT'
-        row.enabled = fovtool.test_width_bool
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.operator("fovcalc.width_gettestxz")
+        if fovtool.fov_expert_bool:
+            countRow += 1
+            labelRow = str(countRow) + ". Record mesh data"
+            row = box.row()
+            row.use_property_split = False
+            row.alignment = 'LEFT'
+            row.enabled = fovtool.test_width_bool
+            if fovtool.test_xz_bool and not fovtool.calc_width_bool:
+                row.template_node_socket(color=(fovtool.ns_yellow))
+            else:
+                row.template_node_socket(color=(fovtool.ns_gray))
+            row.operator("fovcalc.width_gettestxz", text=labelRow)
 
-        row = layout.row()
-        row.use_property_split = True
-#        row.alignment = 'LEFT'
-        row.enabled = False
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.prop(fovtool, "test_x_float")
+            row = box.row()
+            row.use_property_split = True
+    #        row.alignment = 'LEFT'
+            if fovtool.fov_expert_bool:
+                row.enabled = fovtool.test_width_bool
+            else:
+                row.enabled = False
+            row.template_node_socket(color=(fovtool.ns_gray))
+            row.prop(fovtool, "test_x_float")
 
-        row = layout.row()
-        row.use_property_split = True
-#        row.alignment = 'LEFT'
-        row.enabled = False
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.prop(fovtool, "test_z_float")
+            row = box.row()
+            row.use_property_split = True
+    #        row.alignment = 'LEFT'
+            if fovtool.fov_expert_bool:
+                row.enabled = fovtool.test_width_bool
+            else:
+                row.enabled = False
+            row.template_node_socket(color=(fovtool.ns_gray))
+            row.prop(fovtool, "test_z_float")
 
-        row = layout.row()
+        countRow += 1
+        labelRow = str(countRow) + ". Do Width Calculation"
+        row = box.row()
         row.use_property_split = False
         row.alignment = 'LEFT'
         row.enabled = fovtool.test_xz_bool
-        row.template_node_socket(color=(fovtool.ns_color))
-        row.operator("fovcalc.width_calculator")
+        if fovtool.calc_width_bool and not fovtool.final_width_bool:
+            row.template_node_socket(color=(fovtool.ns_yellow))
+        else:
+            row.template_node_socket(color=(fovtool.ns_gray))
+        row.operator("fovcalc.width_calculator", text=labelRow)
 
-        row = layout.row()
+        countRow += 1
+        labelRow = str(countRow) + ". Correct Width"
+        row = box.row()
         row.use_property_split = False
         row.alignment = 'LEFT'
         row.enabled = fovtool.calc_width_bool
         if fovtool.calc_width_bool:
-            row.template_node_socket(color=(0, 1, 0, 1))
+            row.template_node_socket(color=(fovtool.ns_green))
         else:
-            row.template_node_socket(color=(1, 0, 0, 1))
-        row.prop(fovtool, "final_width_float")
+            row.template_node_socket(color=(fovtool.ns_red))
+        row.prop(fovtool, "final_width_float", text=labelRow)
 
 
 class WIDTH_OT_BaseImport(bpy.types.Operator):
@@ -480,6 +678,7 @@ class WIDTH_OT_BaseImport(bpy.types.Operator):
         fovtool.base_x_float = 0.0
 #        fovtool.test_width_float = 768.0
         fovtool.test_x_float = 0.0
+        fovtool.test_z_float = 0.0
         fovtool.final_width_float = 0.0
         
         fovtool.base_width_import_bool = True
@@ -489,7 +688,9 @@ class WIDTH_OT_BaseImport(bpy.types.Operator):
         fovtool.test_width_bool = False
         fovtool.test_xz_bool = False
         fovtool.calc_width_bool = False
-        
+        fovtool.hold_width_bool = False
+        fovtool.final_width_bool = False
+
         return {'FINISHED'}
 
 
@@ -508,9 +709,7 @@ class WIDTH_OT_getbaseX(bpy.types.Operator):
         fovtool = scene.my_tool
 
         ob = context.active_object
-
         fovtool.base_x_float = ob.dimensions[0]
-
         fovtool.base_x_bool = True
 
         return {'FINISHED'}
@@ -550,10 +749,8 @@ class WIDTH_OT_gettestXZ(bpy.types.Operator):
         fovtool = scene.my_tool
 
         ob = context.active_object
-
         fovtool.test_x_float = ob.dimensions[0]
         fovtool.test_z_float = ob.dimensions[2]
-
         fovtool.test_xz_bool = True
 
         return {'FINISHED'}
@@ -568,6 +765,7 @@ class WIDTH_OT_calc(bpy.types.Operator):
     def poll(cls, context): 
         obj = context.active_object
         return obj is not None and obj.type == 'MESH'
+
 
     def execute(self, context):
         scene = context.scene
@@ -592,11 +790,14 @@ class WIDTH_OT_calc(bpy.types.Operator):
         WIDE_Final = -1
         if not PERC_Chng == 0:
             WIDE_Final = TEST_Width - ((WIDE_Diff * PERC_Offs) / PERC_Chng)
-        fovtool.final_width_float = WIDE_Final
 
         if WIDE_Final > 0:
             fovtool.final_width_float = WIDE_Final
             fovtool.calc_width_bool = True
+        else:
+            fovtool.final_width_float = -1
+            fovtool.calc_width_bool = False
+
 
         return {'FINISHED'}
 
