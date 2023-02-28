@@ -10,100 +10,43 @@ Quick Use Chart (Normal Mode)
 
 FoV_Y Calculator
 
-1. 1st Import - Base (Reset)                                                  
-   This clears all calculated and auto obtained values so you can start over. It retains user supplied values between runs. In the Importer settings, be sure to choose "Geometry Load:" [Reprojection (Full)]. Use the Width and Height values from the log file, or you can supply higher values for better precision.
+1.  Do 1st FoV_Y Import (Reset)
+   In the Importer settings, be sure to choose "Geometry Load:" [Reprojection (Full)]. Use the Width and Height values from the log file, or you can supply higher values for better precision.
 
-2. Enter Base FoV_Y                                                   
-   Enter the value from the first import.
+2. Enter FoV_Y used
+   Enter the value from the first FoV_Y import.
 
-3. 2nd Import - Test                                                        
+3. Do 2nd FoV_Y Import
    Ready to get another import with a different FoV_Y value.
 
-4. Enter Test FoV_Y                                                            
-   Enter the value from the second import.
+4. Enter FoV_Y used
+   Enter the value from the second FoV_Y import.
 
-5. Calculate FoV_Y                                                              
+5. Do FoV_Y Calculation
    Performs the calculation and puts the result in the next step.
 
-6. Final FoV_Y                                                                   
-   If it worked correctly, copy this value to use in the next import.
+6. Correct FoV_Y
+   If it worked correctly, copy this value to use for all imports of this scene.
+   
 
 Width Calculator
 
-7. 3rd Import - Base (Reset)                                                           
-   This clears Width calculated and auto obtained values so you can redo. It retains user supplied values between runs. Be sure to use the FoV_Y value from step 8.
+7. Do 1st Width Import (Reset
+   Be sure to use the Correct FoV_Y value from the previous calculation.
 
-8. Enter Base Width                                                           
-    Enter the value from the third import.
+8. Enter Width used
+    Enter the value from the first Width import.
 
-9. 4th Import - Test                                                                   
-    Ready to get another import with a different Width value.
+9. Do 2nd Width Import
+    Get another import using a different Width value.
 
-10. Enter Test Width                                                               
-    Enter the value from the fourth import.
+10. Enter Width used
+    Enter the value from the second Width import.
 
-11. Calculate Width                                                            
+11. Do Width Calculation
     Performs the calculation and puts the result in the next step.
 
-12. Final Width                                                            
-    If it worked correctly, copy this value to use in the final import.
-
-Now import one last time (hopefully) using the two calculated values. This time you will import all the meshes you need. To verify the results, select the original sphere object and check its dimensions.
-
-
-
-Quick Use Chart (Expert Mode)
-
-FoV_Y Calculator
-
-1. 1st Import - Base (Reset)                                                  
-   This clears all calculated and auto obtained values so you can start over. It retains user supplied values between runs. In the Importer settings, be sure to choose "Geometry Load:" [Reprojection (Full)]. Use the Width and Height values from the log file, or you can supply higher values for better precision.
-
-2. Enter Base FoV_Y                                                   
-   Enter the value from the first import.
-
-3. Get Base YZ                                                               
-   Make sure the mesh is selected. This obtains the needed values automatically.
-
-4. 2nd Import - Test                                                        
-   Ready to get another import with a different FoV_Y value.
-
-5. Enter Test FoV_Y                                                            
-   Enter the value from the second import.
-
-6. Get Test Y                                                               
-   Make sure the mesh is selected. This obtains the needed value automatically.
-
-7. Calculate FoV_Y                                                              
-   Performs the calculation and puts the result in the next step.
-
-8. Final FoV_Y                                                                   
-   If it worked correctly, copy this value to use in the next import.
-
-Width Calculator
-
-9. 3rd Import - Base (Reset)                                                           
-   This clears Width calculated and auto obtained values so you can redo. It retains user supplied values between runs. Be sure to use the FoV_Y value from step 8.
-
-10. Enter Base Width                                                           
-    Enter the value from the third import.
-
-11. Get Base X                                                                 
-    Make sure the mesh is selected. This obtains the needed value automatically.
-
-12. 4th Import - Test                                                                   
-    Ready to get another import with a different Width value.
-
-13. Enter Test Width                                                               
-    Enter the value from the fourth import.
-
-14. Get Test XZ                                                               
-    Make sure the mesh is selected. This obtains the needed value automatically.
-
-15. Calculate Width                                                            
-    Performs the calculation and puts the result in the next step.
-
-16. Final Width                                                            
-    If it worked correctly, copy this value to use in the final import.
+12. Correct Width
+    If it worked correctly, copy this value to use for all imports of this scene.
 
 Now import one last time (hopefully) using the two calculated values. This time you will import all the meshes you need. To verify the results, select the original sphere object and check its dimensions.
