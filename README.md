@@ -10,43 +10,43 @@ Quick Use Chart (Normal Mode)
 
 FoV_Y Calculator
 
-1.  Do 1st FoV_Y Import (Reset)
+1.  Do 1st FoV_Y Import (Reset)                                                                            
    In the Importer settings, be sure to choose "Geometry Load:" [Reprojection (Full)]. Use the Width and Height values from the log file, or you can supply higher values for better precision.
 
-2. Enter FoV_Y used
+2. Enter FoV_Y used                                                                            
    Enter the value from the first FoV_Y import.
 
-3. Do 2nd FoV_Y Import
+3. Do 2nd FoV_Y Import                                                                            
    Ready to get another import with a different FoV_Y value.
 
-4. Enter FoV_Y used
+4. Enter FoV_Y used                                                                            
    Enter the value from the second FoV_Y import.
 
-5. Do FoV_Y Calculation
+5. Do FoV_Y Calculation                                                                            
    Performs the calculation and puts the result in the next step.
 
-6. Correct FoV_Y
+6. Correct FoV_Y                                                                            
    If it worked correctly, copy this value to use for all imports of this scene.
    
 
 Width Calculator
 
-7. Do 1st Width Import (Reset
+7. Do 1st Width Import (Reset)                                                                            
    Be sure to use the Correct FoV_Y value from the previous calculation.
 
-8. Enter Width used
+8. Enter Width used                                                                            
     Enter the value from the first Width import.
 
-9. Do 2nd Width Import
+9. Do 2nd Width Import                                                                            
     Get another import using a different Width value.
 
-10. Enter Width used
+10. Enter Width used                                                                            
     Enter the value from the second Width import.
 
-11. Do Width Calculation
+11. Do Width Calculation                                                                            
     Performs the calculation and puts the result in the next step.
 
-12. Correct Width
+12. Correct Width                                                                            
     If it worked correctly, copy this value to use for all imports of this scene.
 
 Now import one last time (hopefully) using the two calculated values. This time you will import all the meshes you need. To verify the results, select the original sphere object and check its dimensions.
