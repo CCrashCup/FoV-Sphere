@@ -52,7 +52,7 @@ Width Calculator
 Now import one last time (hopefully) using the two calculated values. This time you will import all the meshes you need. To verify the results, select the original sphere object and check its dimensions.
 
 
-Step by step instructions without explanation.
+# Step by step instructions without explanation.
 
 Import the sphere mesh file with the first FoV value and the first Width and Height. Never change the Height value once you start.
 
