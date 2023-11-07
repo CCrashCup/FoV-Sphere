@@ -50,3 +50,28 @@ Width Calculator
     If it worked correctly, copy this value to use for all imports of this scene.
 
 Now import one last time (hopefully) using the two calculated values. This time you will import all the meshes you need. To verify the results, select the original sphere object and check its dimensions.
+
+
+Step by step instructions without explanation.
+Import the sphere mesh file with the first FoV value and the first Width and Height. Never change the Height value once you start.
+Click Step 1.
+Enter the first FoV value from the first import into Step 2.
+Delete the mesh.
+Import the sphere mesh file with the second FoV value and the same Width and Height.
+Click step 3.
+Enter the second FoV value from the second import into Step 4.
+Click Step 5.
+Copy the calculated FoV Value from Step 6.
+Delete the mesh.
+Import the sphere mesh file with the copied FoV value and the same Width and Height.
+Click Step 7.
+Enter the first Width value from the third import into Step 8.
+Delete the mesh.
+Import the sphere mesh file with the copied FoV value and the second Width with the same Height.
+Click step 9.
+Enter the second Width value from the fourth import into Step 10.
+Click Step 11.
+Copy the calculated Width Value from Step 12.
+Delete mesh.
+Import all the mesh files with the copied FoV value and the copied Width value with the same Height.
+Done. 
