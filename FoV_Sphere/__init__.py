@@ -784,7 +784,7 @@ class WIDTH_OT_calc(bpy.types.Operator):
         BASE_Diff = BASE_X - TEST_Z
         TEST_Diff = BASE_X - TEST_X
         try:
-            PERC_Chng = (size_2_offset / size_1_offset) * 100
+            PERC_Chng = (TEST_Diff / BASE_Diff) * 100
         except:
             PERC_Chng = 0.0
         PERC_Offs = 100 - PERC_Chng
