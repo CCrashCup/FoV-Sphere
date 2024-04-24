@@ -783,13 +783,15 @@ class WIDTH_OT_calc(bpy.types.Operator):
         WIDE_Diff = BASE_Width - TEST_Width
         BASE_Diff = BASE_X - TEST_Z
         TEST_Diff = BASE_X - TEST_X
-        PERC_Chng = 0
-        if not BASE_Diff == 0:
-            PERC_Chng = (TEST_Diff / BASE_Diff) * 100
+        try:
+            PERC_Chng = (size_2_offset / size_1_offset) * 100
+        except:
+            PERC_Chng = 0.0
         PERC_Offs = 100 - PERC_Chng
-        WIDE_Final = -1
-        if not PERC_Chng == 0:
+        try:
             WIDE_Final = TEST_Width - ((WIDE_Diff * PERC_Offs) / PERC_Chng)
+        except:
+            WIDE_Final = -1.0
 
         if WIDE_Final > 0:
             fovtool.final_width_float = WIDE_Final
@@ -800,7 +802,6 @@ class WIDTH_OT_calc(bpy.types.Operator):
 
 
         return {'FINISHED'}
-
 
 #
 ##  List of items for register and unregister
