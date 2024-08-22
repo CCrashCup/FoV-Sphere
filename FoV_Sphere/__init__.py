@@ -26,7 +26,7 @@ bl_info = {
     "blender": (2, 80, 0),
     "category": "Object",
     "author": "Lofty",
-    "version": (1, 2),
+    "version": (1, 3),
     "description": "Determines the FoV_Y and Width import values for a Sphere Object",
 }
 
@@ -58,7 +58,7 @@ class FOVProperties(bpy.types.PropertyGroup):
 #
     def changeBaseFoV(self, context):
         scene = context.scene
-        fovtool = scene.my_tool
+        fovtool = scene.fov_tool
 
         fovtool.base_fov_bool = True
 
@@ -71,7 +71,7 @@ class FOVProperties(bpy.types.PropertyGroup):
 
     def changeTestFoV(self, context):
         scene = context.scene
-        fovtool = scene.my_tool
+        fovtool = scene.fov_tool
 
         fovtool.test_fov_bool = True
 
@@ -82,7 +82,7 @@ class FOVProperties(bpy.types.PropertyGroup):
 
     def copyFinalFoV(self, context):
         scene = context.scene
-        fovtool = scene.my_tool
+        fovtool = scene.fov_tool
 
         if not fovtool.hold_fov_bool and not fovtool.final_fov_bool:
             fovtool.hold_fov_bool = True
@@ -116,7 +116,7 @@ class FOVProperties(bpy.types.PropertyGroup):
 #
     def changeBaseWidth(self, context):
         scene = context.scene
-        fovtool = scene.my_tool
+        fovtool = scene.fov_tool
 
         fovtool.base_width_bool = True
 
@@ -128,7 +128,7 @@ class FOVProperties(bpy.types.PropertyGroup):
 
     def changeTestWidth(self, context):
         scene = context.scene
-        fovtool = scene.my_tool
+        fovtool = scene.fov_tool
 
         fovtool.test_width_bool = True
 
@@ -141,7 +141,7 @@ class FOVProperties(bpy.types.PropertyGroup):
 
     def copyFinalWidth(self, context):
         scene = context.scene
-        fovtool = scene.my_tool
+        fovtool = scene.fov_tool
 
         if not fovtool.hold_width_bool and not fovtool.final_width_bool:
             fovtool.hold_width_bool = True
@@ -186,7 +186,7 @@ class FOV_PT_fov_panel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         scene = context.scene
-        fovtool = scene.my_tool
+        fovtool = scene.fov_tool
         layout.use_property_decorate = False  # No animation.
 
         box = layout.box()
@@ -350,7 +350,7 @@ to be used in the calculation."""
 
     def execute(self, context):
         scene = context.scene
-        fovtool = scene.my_tool
+        fovtool = scene.fov_tool
 
 #        fovtool.base_fov_float = 45.0
         fovtool.base_y_float = 0.0
@@ -401,7 +401,7 @@ class FOV_OT_getbaseYZ(bpy.types.Operator):
 
     def execute(self, context):
         scene = context.scene
-        fovtool = scene.my_tool
+        fovtool = scene.fov_tool
 
         ob = context.active_object
 
@@ -425,7 +425,7 @@ class FOV_OT_TestImport(bpy.types.Operator):
 
     def execute(self, context):
         scene = context.scene
-        fovtool = scene.my_tool
+        fovtool = scene.fov_tool
 
         fovtool.test_fov_import_bool = True
         
@@ -444,7 +444,7 @@ class FOV_OT_gettestY(bpy.types.Operator):
 
     def execute(self, context):
         scene = context.scene
-        fovtool = scene.my_tool
+        fovtool = scene.fov_tool
 
         ob = context.active_object
 
@@ -467,7 +467,7 @@ class FOV_OT_calc(bpy.types.Operator):
 
     def execute(self, context):
         scene = context.scene
-        fovtool = scene.my_tool
+        fovtool = scene.fov_tool
 
         ob = context.active_object
 
@@ -512,7 +512,7 @@ class WIDTH_PT_width_panel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         scene = context.scene
-        fovtool = scene.my_tool
+        fovtool = scene.fov_tool
         layout.use_property_decorate = False  # No animation.
 
         if fovtool.fov_expert_bool:
@@ -672,7 +672,7 @@ class WIDTH_OT_BaseImport(bpy.types.Operator):
 
     def execute(self, context):
         scene = context.scene
-        fovtool = scene.my_tool
+        fovtool = scene.fov_tool
 
 #        fovtool.base_width_float = 1024.0
         fovtool.base_x_float = 0.0
@@ -706,7 +706,7 @@ class WIDTH_OT_getbaseX(bpy.types.Operator):
 
     def execute(self, context):
         scene = context.scene
-        fovtool = scene.my_tool
+        fovtool = scene.fov_tool
 
         ob = context.active_object
         fovtool.base_x_float = ob.dimensions[0]
@@ -727,7 +727,7 @@ class WIDTH_OT_TestImport(bpy.types.Operator):
 
     def execute(self, context):
         scene = context.scene
-        fovtool = scene.my_tool
+        fovtool = scene.fov_tool
 
         fovtool.test_width_import_bool = True
         
@@ -746,7 +746,7 @@ class WIDTH_OT_gettestXZ(bpy.types.Operator):
 
     def execute(self, context):
         scene = context.scene
-        fovtool = scene.my_tool
+        fovtool = scene.fov_tool
 
         ob = context.active_object
         fovtool.test_x_float = ob.dimensions[0]
@@ -769,7 +769,7 @@ class WIDTH_OT_calc(bpy.types.Operator):
 
     def execute(self, context):
         scene = context.scene
-        fovtool = scene.my_tool
+        fovtool = scene.fov_tool
 
         ob = context.active_object
 
@@ -826,13 +826,13 @@ def register():
     for cls in classes:
         bpy.utils.register_class(cls)
         
-    bpy.types.Scene.my_tool = bpy.props.PointerProperty(type= FOVProperties)
+    bpy.types.Scene.fov_tool = bpy.props.PointerProperty(type= FOVProperties)
  
 def unregister():
 
     for cls in classes:
         bpy.utils.unregister_class(cls)
-    del bpy.types.Scene.my_tool
+    del bpy.types.Scene.fov_tool
  
 if __name__ == "__main__":
     register()
