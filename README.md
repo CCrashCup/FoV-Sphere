@@ -58,7 +58,7 @@ Import the sphere mesh file with the first FoV value and the first Width and Hei
 
 Click Step 1.
 
-Enter the first FoV value from the first import into Step 2.
+Enter the first FoV value from the first import into Step 2. Press ENTER.
 
 Delete the mesh.
 
@@ -66,11 +66,11 @@ Import the sphere mesh file with the second FoV value and the same Width and Hei
 
 Click step 3.
 
-Enter the second FoV value from the second import into Step 4.
+Enter the second FoV value from the second import into Step 4. Press ENTER.
 
 Click Step 5.
 
-Copy the calculated FoV Value from Step 6.
+Copy the calculated FoV Value from Step 6. Press ENTER.
 
 Delete the mesh.
 
@@ -78,15 +78,15 @@ Import the sphere mesh file with the copied calculated FoV value and the same Wi
 
 Click Step 7.
 
-Enter the first Width value from the third import into Step 8.
+Enter the first Width value from the third import into Step 8. Press ENTER.
 
 Delete the mesh.
 
-Import the sphere mesh file with the copied calculated FoV value and the second Width with the same Height.
+Import the sphere mesh file with the copied calculated FoV value and the second Width, but with the same Height.
 
 Click step 9.
 
-Enter the second Width value from the fourth import into Step 10.
+Enter the second Width value from the fourth import into Step 10. Press ENTER.
 
 Click Step 11.
 
