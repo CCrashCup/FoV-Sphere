@@ -12,7 +12,7 @@ Quick Use Chart (Normal Mode)
 FoV_Y Calculator
 
 1.  Do 1st FoV_Y Import (Reset)                                                                            
-   In the Importer settings, be sure to choose "Geometry Load:" [Reprojection (Full)]. Use the Width and Height values from the log file, or you can supply higher values, while maintining aspect ratioo, for better precision.
+   In the Importer settings, be sure to choose "Position:" [Reprojection (Full)]. Use the Width and Height values from the log file, or you can supply higher values, while maintining aspect ratioo, for better precision.
 
 2. Enter FoV_Y used                                                                            
    Enter the value from the first FoV_Y import.
