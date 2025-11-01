@@ -1,5 +1,5 @@
 # FoV-Sphere
-A Blender add-on to be used for determining the correct Field of View (FoV) and Aspect Ratio (via the Width) when importing a scene that was ripped with Ninja Ripper 2. Download here: https://github.com/CCrashCup/FoV-Sphere/releases
+A Blender add-on to be used for determining the correct Field of View (FoV) and Aspect Ratio (via the Width) when importing a scene that was ripped with Ninja Ripper 2. To use this add-on, there must be a sphere mesh in the ripped scene. Download here: https://github.com/CCrashCup/FoV-Sphere/releases
 
 
 This is a two part process. The first part is for calculating the correct FoV_Y value to use when importing using World Space. The second part is for calculating the correct Width value to use when importing. Each part requires two (2) imports to be made with different test values. The resulting sphere mesh dimesions of these imports will be used in the calculations. To arrive at the correct import values, click on each numbered step in the panel, supplying the values used during the import where required. The same sphere mesh file will be used every time. Each import requires a different import value to be used. Make sure the imported mesh is the Active selected mesh. Before each subsequent import, delete the mesh, after all the steps before have been taken. To help keep track of where you are in the steps, each step is not active until the prior one has been done. The current step will be flagged with a yellow dot. The two (2) final correct values are flagged with red dots, which will turn green when each procedure successfully completes.
@@ -11,7 +11,7 @@ Quick Use Chart (Normal Mode)
 FoV_Y Calculator
 
 1.  Do 1st FoV_Y Import (Reset)                                                                            
-   In the Importer settings, be sure to choose "Geometry Load:" [Reprojection (Full)]. Use the Width and Height values from the log file, or you can supply higher values for better precision.
+   In the Importer settings, be sure to choose "Geometry Load:" [Reprojection (Full)]. Use the Width and Height values from the log file, or you can supply higher values, while maintining aspect ratioo, for better precision.
 
 2. Enter FoV_Y used                                                                            
    Enter the value from the first FoV_Y import.
