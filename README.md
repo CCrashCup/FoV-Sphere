@@ -1,5 +1,6 @@
 # FoV-Sphere
 A Blender add-on to be used for determining the correct Field of View (FoV) and Aspect Ratio (via the Width) when importing a scene that was ripped with Ninja Ripper 2. To use this add-on, there must be a sphere mesh in the ripped scene.
+
 Download here: https://github.com/CCrashCup/FoV-Sphere/releases
 
 
@@ -7,11 +8,9 @@ This is a two part process. The first part is for calculating the correct FoV_Y 
 
 Note: Do NOT change the Height import value during this entire process, or the calculated final values will not be correct
 
-#
-## Quick Use Chart (Normal Mode)
-#
+# Quick Use Chart (Normal Mode)
 
-# Part 1
+## Part 1
 FoV_Y Calculator (Use the Width and Height from the log file, or your Windows Display Settings.)
 
 1.  Do 1st FoV_Y Import (Reset)                                                                            
@@ -32,7 +31,7 @@ FoV_Y Calculator (Use the Width and Height from the log file, or your Windows Di
 6. Correct FoV_Y                                                                            
    If it worked correctly, copy this value to use for all imports of this scene.
    
-# Part 2
+## Part 2
 Width Calculator (If the correct values were used in the first part, then this part is not needed.)
 
 7. Do 1st Width Import (Reset)                                                                            
@@ -56,9 +55,7 @@ Width Calculator (If the correct values were used in the first part, then this p
 Now import one last time (hopefully) using the two calculated values. This time you will import all the meshes you need. To verify the results, select the original sphere object and check its dimensions.
 
 
-#
-## Step by step instructions without explanation.
-#
+# Step by step instructions without explanation.
 
 Import the sphere mesh file with the first FoV value and the first Width and Height. Never change the Height value once you start.
 
