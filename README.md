@@ -7,18 +7,21 @@ This is a two part process. The first part is for calculating the correct FoV_Y 
 
 Note: Do NOT change the Height import value during this entire process, or the calculated final values will not be correct
 
-Quick Use Chart (Normal Mode)
+#
+## Quick Use Chart (Normal Mode)
+#
 
-FoV_Y Calculator
+# Part 1
+FoV_Y Calculator (Use the Width and Height from the log file, or your Windows Display Settings.)
 
 1.  Do 1st FoV_Y Import (Reset)                                                                            
-   In the Importer settings, be sure to choose "Position:" [Reprojection (Full)]. Use the Width and Height values from the log file, or you can supply higher values, while maintining aspect ratioo, for better precision.
+   In the Importer settings, be sure to choose "Position:" [Reprojection (Full)]. Use the Width and Height values from the log file, or you can supply higher values, while maintining aspect ratio, for better precision.
 
 2. Enter FoV_Y used                                                                            
    Enter the value from the first FoV_Y import.
 
 3. Do 2nd FoV_Y Import                                                                            
-   Ready to get another import with a different FoV_Y value.
+   Do another import with a different FoV_Y value.
 
 4. Enter FoV_Y used                                                                            
    Enter the value from the second FoV_Y import.
@@ -29,8 +32,8 @@ FoV_Y Calculator
 6. Correct FoV_Y                                                                            
    If it worked correctly, copy this value to use for all imports of this scene.
    
-
-Width Calculator
+# Part 2
+Width Calculator (If the correct values were used in the first part, then this part is not needed.)
 
 7. Do 1st Width Import (Reset)                                                                            
    Be sure to use the Correct FoV_Y value from the previous calculation.
@@ -39,7 +42,7 @@ Width Calculator
     Enter the value from the first Width import.
 
 9. Do 2nd Width Import                                                                            
-    Get another import using a different Width value.
+    Do another import using a different Width value.
 
 10. Enter Width used                                                                            
     Enter the value from the second Width import.
@@ -53,13 +56,15 @@ Width Calculator
 Now import one last time (hopefully) using the two calculated values. This time you will import all the meshes you need. To verify the results, select the original sphere object and check its dimensions.
 
 
-# Step by step instructions without explanation.
+#
+## Step by step instructions without explanation.
+#
 
 Import the sphere mesh file with the first FoV value and the first Width and Height. Never change the Height value once you start.
 
 Click Step 1.
 
-Enter the first FoV value from the first import into Step 2. Press ENTER.
+Enter the first FoV value used in the first import into Step 2. Press ENTER.
 
 Delete the mesh.
 
@@ -67,7 +72,7 @@ Import the sphere mesh file with the second FoV value and the same Width and Hei
 
 Click step 3.
 
-Enter the second FoV value from the second import into Step 4. Press ENTER.
+Enter the second FoV value used in the second import into Step 4. Press ENTER.
 
 Click Step 5.
 
@@ -76,18 +81,19 @@ Copy the calculated FoV Value from Step 6. Press ENTER.
 Delete the mesh.
 
 Import the sphere mesh file with the copied calculated FoV value and the same Width and Height.
+Continue only if needed.
 
 Click Step 7.
 
-Enter the first Width value from the third import into Step 8. Press ENTER.
+Enter the first Width value used in the third import into Step 8. Press ENTER.
 
 Delete the mesh.
 
-Import the sphere mesh file with the copied calculated FoV value and the second Width, but with the same Height.
+Import the sphere mesh file with the copied calculated FoV value from Step 6 and the second Width, but with the same Height.
 
 Click step 9.
 
-Enter the second Width value from the fourth import into Step 10. Press ENTER.
+Enter the second Width value used in the fourth import into Step 10. Press ENTER.
 
 Click Step 11.
 
